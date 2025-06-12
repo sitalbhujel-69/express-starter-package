@@ -8,7 +8,15 @@ A minimal and clean Express.js starter project with folder structure, asyncHandl
 ### 1. clone the repo
 ```bash
   git clone https://github.com/sitalbhujel-69/express-starter-package .
-  npm i
-  rm -rf .git
-  npm run dev
   ```
+  ---
+### 2. install dependencies
+```bash
+npm i 
+```
+---
+### 3. remove git history
+```bash
+rm -rf .git
+```
+---
