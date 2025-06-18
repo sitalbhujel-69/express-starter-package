@@ -4,6 +4,7 @@ dotenv.config();
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { generateToken } from "../utils/jwt.js";
+import { User } from "../models/user.model.js";
 
 passport.use(new GoogleStrategy({
   clientID:process.env.GOOGLE_CLIENT_ID,
@@ -12,9 +13,17 @@ passport.use(new GoogleStrategy({
 },
   async function(accessToken,refreshToken,profile,cb){
     try {
-      //logic for user creation in db
-      const token = generateToken()
-      cb(null,{profile,token})
+      let user =await User.findOne({googleId:profile.id});
+      if(!user){
+        user = await User.create({
+          googleId:profile.id,
+          fullName:profile.displayName,
+          email:profile.emails[0].value,
+          isVerified:true
+        })
+      }
+      const token = generateToken(user)
+      cb(null,{user,token})
     } catch (error) {
       cb(error,null)
     }
